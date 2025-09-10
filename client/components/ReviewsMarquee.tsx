@@ -3,10 +3,10 @@ import { useRef, useEffect, useMemo } from "react";
 
 const BASE = [
   { text: "Service was fast", user: "@alex", note: "Verified purchase", rating: 5 },
-  { text: "So cheap bro", user: "@mike", note: "Great value", rating: 5 },
-  { text: "Trusted", user: "@sara", note: "3rd order", rating: 5 },
+  { text: "So cheap bro", user: "@ale", note: "Great value", rating: 5 },
+  { text: "Trusted", user: "@david", note: "3rd order", rating: 5 },
   { text: "Instant delivery", user: "@lee", note: "Arrived in seconds", rating: 5 },
-  { text: "Top quality", user: "@nina", note: "Exactly as described", rating: 4 },
+  { text: "Top quality", user: "@demna", note: "Exactly as described", rating: 4 },
   { text: "Great support", user: "@omar", note: "Helpful team", rating: 5 },
   { text: "10/10 would recommend", user: "@ivy", note: "Smooth checkout", rating: 5 },
   { text: "Will buy again", user: "@rob", note: "Returning customer", rating: 5 },
@@ -15,6 +15,33 @@ const BASE = [
   { text: "Lightning quick", user: "@mei", note: "Super fast", rating: 5 },
   { text: "Excellent experience", user: "@liam", note: "Flawless", rating: 5 },
 ];
+
+// Custom review profile images provided by the user
+const ATTACHMENTS = [
+  "https://cdn.builder.io/api/v1/image/assets%2F1f105010e6eb4580a2d84c1550b6ea46%2Fdab9f297854a4c35b3ffe8055634ed4d?format=webp&width=800",
+  "https://cdn.builder.io/api/v1/image/assets%2F1f105010e6eb4580a2d84c1550b6ea46%2Fd93f663b91cf45c793e7a428dd62502b?format=webp&width=800",
+  "https://cdn.builder.io/api/v1/image/assets%2F1f105010e6eb4580a2d84c1550b6ea46%2F64af4197b7b3413cad9229860c4ce23e?format=webp&width=800",
+  "https://cdn.builder.io/api/v1/image/assets%2F1f105010e6eb4580a2d84c1550b6ea46%2F73ff0253db334ac2ac12beed500546a5?format=webp&width=800",
+  "https://cdn.builder.io/api/v1/image/assets%2F1f105010e6eb4580a2d84c1550b6ea46%2Fc3911b0b2cfd4c60927c16fcca6995d9?format=webp&width=800",
+];
+
+function pickAvatarForInitial(initial: string) {
+  if (!initial) return ATTACHMENTS[0];
+  const key = initial.toUpperCase();
+  // Specific mapping: H -> first, L -> second, A -> third, D -> fourth, W -> fifth
+  const specific: Record<string, string> = {
+    H: ATTACHMENTS[0],
+    L: ATTACHMENTS[1],
+    A: ATTACHMENTS[2],
+    D: ATTACHMENTS[3],
+    W: ATTACHMENTS[4],
+  };
+  if (specific[key]) return specific[key];
+  // Fallback deterministic selection based on letter
+  const code = key.charCodeAt(0) - 65;
+  const idx = ((code % ATTACHMENTS.length) + ATTACHMENTS.length) % ATTACHMENTS.length;
+  return ATTACHMENTS[idx];
+}
 
 function Stars({ rating }: { rating: number }) {
   return (
@@ -99,7 +126,7 @@ export function ReviewsMarquee({ count = 982 }: { count?: number }) {
   
               <h2 className="mt-3 text-3xl md:text-4xl font-extrabold text-slate-100 leading-tight flex items-center gap-3">
                 <img src="https://cdn.builder.io/api/v1/image/assets%2Fd298c54982d64a0783c9a8a3d1e480c1%2F7886c15a725e4268bb981fb1c2969734?format=webp&width=800" alt="trusted icon" className="w-32 h-32 md:w-40 md:h-40 rounded-full object-cover shadow-2xl" />
-                <span>Trusted by <span className="text-emerald-400">1000+</span> Costumers</span>
+                <span>Trusted by <span className="text-emerald-400">1000+</span> - costomers</span>
               </h2>
             </div>
 
@@ -143,7 +170,7 @@ export function ReviewsMarquee({ count = 982 }: { count?: number }) {
                 >
                   <div className="flex items-start gap-4" style={{ pointerEvents: 'auto' }}>
                     <div className="flex-shrink-0">
-                      <img src={`https://api.dicebear.com/9.x/pixel-art/svg?seed=${encodeURIComponent(name)}`} alt={name} className="h-10 w-10 rounded-full object-cover border border-white/5 bg-slate-800" />
+                      <img src={pickAvatarForInitial(initial)} alt={name} className="h-10 w-10 rounded-full object-cover border border-white/5 bg-slate-800" />
                     </div>
                     <div className="flex-1">
                       <div className="flex items-center justify-between">

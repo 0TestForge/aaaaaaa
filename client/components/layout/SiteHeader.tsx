@@ -173,7 +173,7 @@ export function SiteHeader() {
                     <button
                       key={it.id}
                       onClick={() => {
-                        if (it.id === "grow") window.location.assign("/grow"); else if (it.id === "mm") window.location.assign("/mm"); else if (it.id === "brainrot") window.location.assign("/brainrot"); else if (it.id === "blox") window.location.assign("/blox"); else if (it.id === "blade") window.location.assign("/mm2");
+                        if (it.id === "grow") window.location.assign("/grow"); else if (it.id === "mm") window.location.assign("/mm"); else if (it.id === "brainrot") window.location.assign("/brainrot"); else if (it.id === "blox") window.location.assign("/blox"); else if (it.id === "blade") window.location.assign("/blade");
                       }}
                       className="flex items-center gap-3 rounded-md px-2 py-2 hover:bg-white/5"
                     >
@@ -341,7 +341,7 @@ export function SiteHeader() {
                         <button
                           key={it.id}
                           onClick={() => {
-                            if (it.id === "grow") window.location.assign("/grow"); else if (it.id === "mm") window.location.assign("/mm"); else if (it.id === "brainrot") window.location.assign("/brainrot"); else if (it.id === "blox") window.location.assign("/blox"); else if (it.id === "blade") window.location.assign("/mm2");
+                            if (it.id === "grow") window.location.assign("/grow"); else if (it.id === "mm") window.location.assign("/mm"); else if (it.id === "brainrot") window.location.assign("/brainrot"); else if (it.id === "blox") window.location.assign("/blox"); else if (it.id === "blade") window.location.assign("/blade");
                           }}
                           className="flex items-center gap-3 rounded-md px-2 py-2 hover:bg-white/10"
                         >

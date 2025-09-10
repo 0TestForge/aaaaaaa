@@ -44,8 +44,15 @@ export default function Blade() {
     <div className="container py-12 md:py-20">
       <div className="grid gap-8 md:grid-cols-2 items-start">
         <div className="w-full">
-          <div className="rounded-2xl overflow-hidden border border-white/10 bg-gradient-to-br from-[#0b1220] to-[#071427] p-6">
-            <img src={img} alt="Blade Ball" className="w-full h-auto max-h-[520px] object-cover rounded-md shadow-lg" />
+          <div className="rounded-2xl overflow-visible border-0 bg-transparent p-0">
+            <article className="relative h-full w-full max-w-[900px] mx-auto overflow-visible rounded-none border-0 bg-transparent">
+              <div className="relative z-10 mx-auto h-[640px] w-full overflow-hidden">
+                <img src="https://cdn.builder.io/api/v1/image/assets%2F1f105010e6eb4580a2d84c1550b6ea46%2F5b8f6b28f64d4567ae80ecadc8585411?format=webp&width=800" alt="Blade Ball" className="hidden" />
+                <div className="absolute inset-0">
+                  <img src="https://cdn.builder.io/api/v1/image/assets%2F1f105010e6eb4580a2d84c1550b6ea46%2F5b8f6b28f64d4567ae80ecadc8585411?format=webp&width=800" alt="Blade Ball" draggable={false} className="absolute inset-0 w-full h-full object-cover rounded-md shadow-lg" />
+                </div>
+              </div>
+            </article>
           </div>
         </div>
 
