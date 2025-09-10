@@ -104,7 +104,19 @@ export default function Brainrot() {
   // Disable list item entrance animations after initial mount to prevent flicker on re-renders (e.g., when opening cart)
   const animationsDisabledRef = useRef(false);
   const bottomScrollRef = useRef<HTMLDivElement | null>(null);
+  const [bottomScrollable, setBottomScrollable] = useState(false);
   useEffect(() => { animationsDisabledRef.current = true; }, []);
+
+  useEffect(() => {
+    const el = bottomScrollRef.current;
+    if (!el) return;
+    const check = () => setBottomScrollable(el.scrollWidth > el.clientWidth);
+    check();
+    const ro = new ResizeObserver(check);
+    ro.observe(el);
+    window.addEventListener('resize', check);
+    return () => { ro.disconnect(); window.removeEventListener('resize', check); };
+  }, []);
 
   const filterTitleMap: Record<FilterKey, string> = {
     all: "All Items",
@@ -264,19 +276,25 @@ export default function Brainrot() {
 
   const SectionSlider = ({ fkey, items, doAnimate }: { fkey: FilterKey; items: Item[]; doAnimate: boolean }) => {
     const wrapperRef = useRef<HTMLDivElement | null>(null);
+    const [isScrollable, setIsScrollable] = useState(false);
     useEffect(() => {
       const root = wrapperRef.current;
       if (!root) return;
       const scrollEl = root.querySelector('.best-scroll') as HTMLElement | null;
-      if (!scrollEl) { root.style.setProperty('--best-progress', '0'); return; }
+      if (!scrollEl) { root.style.setProperty('--best-progress', '0'); setIsScrollable(false); return; }
       const onScroll = () => {
         const max = scrollEl.scrollWidth - scrollEl.clientWidth;
         const p = max > 0 ? scrollEl.scrollLeft / max : 0;
         root.style.setProperty('--best-progress', String(p));
       };
+      const checkScrollable = () => setIsScrollable(scrollEl.scrollWidth > scrollEl.clientWidth);
       onScroll();
+      checkScrollable();
+      const ro = new ResizeObserver(() => { onScroll(); checkScrollable(); });
+      ro.observe(scrollEl);
+      window.addEventListener('resize', checkScrollable);
       scrollEl.addEventListener('scroll', onScroll, { passive: true });
-      return () => scrollEl.removeEventListener('scroll', onScroll as EventListener);
+      return () => { scrollEl.removeEventListener('scroll', onScroll as EventListener); ro.disconnect(); window.removeEventListener('resize', checkScrollable); };
     }, []);
 
     return (
@@ -286,7 +304,7 @@ export default function Brainrot() {
           <h2 className="best-heading text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tight text-white">{filterTitleMap[fkey].toUpperCase()}</h2>
         </div>
         <div ref={wrapperRef} className="best-scroll-wrapper relative">
-          <div className="best-scroll flex gap-4 overflow-x-auto pb-4 snap-x snap-mandatory overscroll-contain" onWheel={(e) => { const el = e.currentTarget as HTMLElement; if (Math.abs(e.deltaY) > Math.abs(e.deltaX)) { e.stopPropagation(); e.preventDefault(); el.scrollLeft += e.deltaY * 3; } }}>
+          <div className="best-scroll flex gap-4 overflow-x-auto pb-4 snap-x snap-mandatory overscroll-contain">
             {items.map((it, idx) => {
               const qty = qtyInCart(it.id);
               const soldOut = false;
@@ -465,13 +483,13 @@ export default function Brainrot() {
         {/* Mobile bottom filter slider */}
         <div className="md:hidden fixed bottom-0 left-0 right-0 z-[120] border-t border-white/10 bg-background/90 backdrop-blur">
           <div className="container py-2 best-scroll-wrapper relative">
-            <button type="button" aria-label="Scroll left" className="absolute left-1 top-1/2 -translate-y-1/2 z-20 rounded-full bg-black/50 text-white p-2 active:scale-95" onClick={() => { const el = bottomScrollRef.current; if (!el) return; const btn = el?.querySelector('button'); const w = (btn ? (btn as HTMLElement).getBoundingClientRect().width : 90) + 8; el.scrollBy({ left: -(w * 2), behavior: 'smooth' }); }}>
+            <button type="button" aria-label="Scroll left" className={`absolute left-1 top-1/2 -translate-y-1/2 z-20 rounded-full bg-input border-border border-[2px] text-white p-2 active:scale-95 ${bottomScrollable ? '' : 'hidden'}`}  onClick={() => { const el = bottomScrollRef.current; if (!el) return; const btn = el?.querySelector('button'); const w = (btn ? (btn as HTMLElement).getBoundingClientRect().width : 90) + 8; el.scrollBy({ left: -(w * 2), behavior: 'smooth' }); }}>
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M15 6l-6 6l6 6"/></svg>
             </button>
-            <button type="button" aria-label="Scroll right" className="absolute right-1 top-1/2 -translate-y-1/2 z-20 rounded-full bg-black/50 text-white p-2 active:scale-95" onClick={() => { const el = bottomScrollRef.current; if (!el) return; const btn = el?.querySelector('button'); const w = (btn ? (btn as HTMLElement).getBoundingClientRect().width : 90) + 8; el.scrollBy({ left: (w * 2), behavior: 'smooth' }); }}>
+            <button type="button" aria-label="Scroll right" className={`absolute right-1 top-1/2 -translate-y-1/2 z-20 rounded-full bg-input border-border border-[2px] text-white p-2 active:scale-95 ${bottomScrollable ? '' : 'hidden'}`}  onClick={() => { const el = bottomScrollRef.current; if (!el) return; const btn = el?.querySelector('button'); const w = (btn ? (btn as HTMLElement).getBoundingClientRect().width : 90) + 8; el.scrollBy({ left: (w * 2), behavior: 'smooth' }); }}>
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M9 6l6 6l-6 6"/></svg>
             </button>
-            <div ref={bottomScrollRef} className="best-scroll flex items-center px-2 py-2 gap-1 overflow-x-auto" onWheel={(e) => { const el = e.currentTarget as HTMLElement; if (Math.abs(e.deltaY) > Math.abs(e.deltaX)) { e.preventDefault(); e.stopPropagation(); el.scrollLeft += e.deltaY * 3; } }}>
+            <div ref={bottomScrollRef} className="best-scroll flex items-center px-2 py-2 gap-1 overflow-x-auto">
               {[
                 { key: 'best', label: 'Best Sellers', color: 'text-red-400 hover:bg-gradient-to-t hover:from-red-500/10 hover:text-red-300', rect: '#FE5050', stroke: '#FE5050' },
                 { key: 'brainrots', label: 'Brainrots', color: 'text-gray-400 hover:bg-gradient-to-t hover:from-emerald-500/10 hover:text-emerald-300', rect: '#22c55e', stroke: '#22c55e' },

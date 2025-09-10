@@ -154,10 +154,17 @@ export default function BloxFruits() {
   const navigate = useNavigate();
   const SectionSlider = ({ fkey, items, doAnimate }: { fkey: FilterKey; items: Item[]; doAnimate: boolean }) => {
     const wrapperRef = useRef<HTMLDivElement | null>(null);
+    const [isScrollable, setIsScrollable] = useState(false);
     useEffect(() => {
-      const root = wrapperRef.current; if (!root) return; const scrollEl = root.querySelector('.best-scroll') as HTMLElement | null; if (!scrollEl) { root.style.setProperty('--best-progress', '0'); return; }
+      const root = wrapperRef.current; if (!root) return; const scrollEl = root.querySelector('.best-scroll') as HTMLElement | null; if (!scrollEl) { root.style.setProperty('--best-progress', '0'); setIsScrollable(false); return; }
       const onScroll = () => { const max = scrollEl.scrollWidth - scrollEl.clientWidth; const p = max > 0 ? scrollEl.scrollLeft / max : 0; root.style.setProperty('--best-progress', String(p)); };
-      onScroll(); scrollEl.addEventListener('scroll', onScroll, { passive: true }); return () => scrollEl.removeEventListener('scroll', onScroll as EventListener);
+      const checkScrollable = () => setIsScrollable(scrollEl.scrollWidth > scrollEl.clientWidth);
+      onScroll(); checkScrollable();
+      const ro = new ResizeObserver(() => { onScroll(); checkScrollable(); });
+      ro.observe(scrollEl);
+      window.addEventListener('resize', checkScrollable);
+      scrollEl.addEventListener('scroll', onScroll, { passive: true });
+      return () => { scrollEl.removeEventListener('scroll', onScroll as EventListener); ro.disconnect(); window.removeEventListener('resize', checkScrollable); };
     }, []);
 
     return (
@@ -173,7 +180,7 @@ export default function BloxFruits() {
           </div>
         </div>
         <div ref={wrapperRef} className="best-scroll-wrapper relative">
-          <div className="best-scroll flex gap-4 overflow-x-auto pb-4 snap-x snap-mandatory overscroll-contain" onWheel={(e) => { const el = e.currentTarget as HTMLElement; if (Math.abs(e.deltaY) > Math.abs(e.deltaX)) { e.stopPropagation(); e.preventDefault(); el.scrollLeft += e.deltaY * 3; } }}>
+          <div className="best-scroll flex gap-4 overflow-x-auto pb-4 snap-x snap-mandatory overscroll-contain">
             {items.map((it) => {
               const qty = qtyInCart(it.id);
               const soldOut = false;
@@ -278,7 +285,7 @@ export default function BloxFruits() {
           {/* Mobile bottom filter slider */}
           <div className="md:hidden fixed bottom-0 left-0 right-0 z-[120] border-t border-white/10 bg-background/90 backdrop-blur">
             <div className="container py-2 best-scroll-wrapper relative">
-              <div className="best-scroll flex items-center px-2 py-2 gap-1 overflow-x-auto" onWheel={(e) => { const el = e.currentTarget as HTMLElement; if (Math.abs(e.deltaY) > Math.abs(e.deltaX)) { e.preventDefault(); e.stopPropagation(); el.scrollLeft += e.deltaY * 3; } }}>
+              <div className="best-scroll flex items-center px-2 py-2 gap-1 overflow-x-auto">
                 {[
                   { key: 'best', label: 'Best Sellers', rect: '#FE5050', stroke: '#FE5050', color: 'text-red-400 hover:bg-gradient-to-t hover:from-red-500/10 hover:text-red-300' },
                   { key: 'permanent', label: 'Permanent Fruits', rect: '#22c55e', stroke: '#22c55e', color: 'text-gray-400 hover:bg-gradient-to-t hover:from-emerald-500/10 hover:text-emerald-300' },

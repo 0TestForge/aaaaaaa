@@ -45,11 +45,11 @@ export default function Blade() {
       <div className="grid gap-8 md:grid-cols-2 items-start">
         <div className="w-full">
           <div className="rounded-2xl overflow-visible border-0 bg-transparent p-0">
-            <article className="relative h-full w-full max-w-[900px] mx-auto overflow-visible rounded-none border-0 bg-transparent">
-              <div className="relative z-10 mx-auto h-[640px] w-full overflow-hidden">
+            <article className="relative h-full w-full max-w-[560px] md:max-w-[700px] mx-auto overflow-visible rounded-none border-0 bg-transparent">
+              <div className="relative z-10 mx-auto w-full overflow-hidden aspect-[4/3] sm:aspect-[16/10] md:aspect-[16/9]">
                 <img src="https://cdn.builder.io/api/v1/image/assets%2F1f105010e6eb4580a2d84c1550b6ea46%2F5b8f6b28f64d4567ae80ecadc8585411?format=webp&width=800" alt="Blade Ball" className="hidden" />
-                <div className="absolute inset-0">
-                  <img src="https://cdn.builder.io/api/v1/image/assets%2F1f105010e6eb4580a2d84c1550b6ea46%2F5b8f6b28f64d4567ae80ecadc8585411?format=webp&width=800" alt="Blade Ball" draggable={false} className="absolute inset-0 w-full h-full object-cover rounded-md shadow-lg" />
+                <div className="absolute inset-0 flex items-center justify-center p-4">
+                  <img src="https://cdn.builder.io/api/v1/image/assets%2F1f105010e6eb4580a2d84c1550b6ea46%2F5b8f6b28f64d4567ae80ecadc8585411?format=webp&width=800" alt="Blade Ball" draggable={false} className="max-w-full max-h-full object-contain rounded-md shadow-lg" />
                 </div>
               </div>
             </article>
