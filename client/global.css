@@ -507,7 +507,7 @@ button.isolate-filter[aria-pressed="true"] {
 }
 
 /* Sliders: keep scroll inside the container */
-.best-scroll { overscroll-behavior: auto; touch-action: pan-y; }
+.best-scroll { overscroll-behavior: auto; touch-action: pan-x; -webkit-overflow-scrolling: touch; }
 
 /* Mobile filters panel styles and toggle behavior */
 @media (max-width: 768px) {

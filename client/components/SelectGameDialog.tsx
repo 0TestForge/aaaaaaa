@@ -1,5 +1,5 @@
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 
 export function SelectGameDialog({ children }: { children: React.ReactNode }) {
   const items = [
@@ -39,7 +39,7 @@ export function SelectGameDialog({ children }: { children: React.ReactNode }) {
     <Dialog>
       <DialogTrigger asChild>{children}</DialogTrigger>
       <DialogContent
-        className="dialog-scroll w-[92vw] h-[92vw] max-w-[720px] max-h-[720px] overflow-auto bg-cover bg-center p-4 sm:p-4 md:p-6"
+        className="dialog-scroll w-[92vw] max-w-[720px] max-h-[70vh] overflow-auto bg-cover bg-center p-4 sm:p-4 md:p-6"
         style={{
           backgroundImage:
             "url(https://cdn.builder.io/api/v1/image/assets%2F63c936af87bb4092b7300f333f376cfe%2F7521b0d700404c0ea553f70afb05386d?format=webp&width=1200)",
