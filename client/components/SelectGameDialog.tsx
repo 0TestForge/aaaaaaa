@@ -39,7 +39,7 @@ export function SelectGameDialog({ children }: { children: React.ReactNode }) {
     <Dialog>
       <DialogTrigger asChild>{children}</DialogTrigger>
       <DialogContent
-        className="dialog-scroll w-[92vw] max-w-sm sm:max-w-lg md:max-w-xl max-h-[95vh] overflow-auto bg-cover bg-center p-4 sm:p-4 md:p-6"
+        className="dialog-scroll w-[92vw] h-[92vw] max-w-[720px] max-h-[720px] overflow-auto bg-cover bg-center p-4 sm:p-4 md:p-6"
         style={{
           backgroundImage:
             "url(https://cdn.builder.io/api/v1/image/assets%2F63c936af87bb4092b7300f333f376cfe%2F7521b0d700404c0ea553f70afb05386d?format=webp&width=1200)",
@@ -50,7 +50,7 @@ export function SelectGameDialog({ children }: { children: React.ReactNode }) {
           <DialogHeader className="-mt-1">
             <DialogTitle className="text-2xl md:text-4xl font-extrabold tracking-wider uppercase text-foreground drop-shadow-sm">Choose a Game</DialogTitle>
           </DialogHeader>
-          <div className="mt-2 grid grid-cols-1 gap-3">
+          <div className="mt-2 grid grid-cols-1 sm:grid-cols-2 gap-3">
             {items.map((it) => (
               <Button
                 key={it.id}

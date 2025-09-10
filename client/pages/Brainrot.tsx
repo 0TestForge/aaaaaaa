@@ -387,15 +387,9 @@ export default function Brainrot() {
                   <Button variant="ghost" size="sm" className={`px-2 py-2 text-white ${filter === "brainrots" ? "underline" : ""}`} onClick={() => setFilter("brainrots")}>
                     Brainrots
                   </Button>
-                  <Button variant="ghost" size="sm" className={`px-2 py-2 text-white ${filter === "lucky" ? "underline" : ""}`} onClick={() => setFilter("lucky")}>
-                    Lucky Blocks
-                  </Button>
                   <div className="mx-2 h-6 border-r border-white/6" />
                   <Button variant="ghost" size="sm" className={`px-2 py-2 text-white ${filter === "bundles" ? "underline" : ""}`} onClick={() => setFilter("bundles")}>
                     Bundles
-                  </Button>
-                  <Button variant="ghost" size="sm" className={`px-2 py-2 text-white ${filter === "mutated" ? "underline" : ""}`} onClick={() => setFilter("mutated")}>
-                    Mutated Pets
                   </Button>
                 </div>
                 <div className="flex items-center">
@@ -442,12 +436,6 @@ export default function Brainrot() {
                   <Button className="filter-custom justify-start w-full px-3 py-2 bg-transparent hover:bg-transparent border-0 shadow-none text-white" size="sm" onClick={() => setFilter("brainrots")}>
                     Brainrots
                   </Button>
-                  <Button className="filter-custom justify-start w-full px-3 py-2 bg-transparent hover:bg-transparent border-0 shadow-none text-white" size="sm" onClick={() => setFilter("lucky")}>
-                    Lucky Blocks
-                  </Button>
-                  <Button className="filter-custom justify-start w-full px-3 py-2 bg-transparent hover:bg-transparent border-0 shadow-none text-white" size="sm" onClick={() => setFilter("mutated")}>
-                    Mutated Pets
-                  </Button>
                   <Button className="filter-custom justify-start w-full px-3 py-2 bg-transparent hover:bg-transparent border-0 shadow-none text-white" size="sm" onClick={() => setFilter("bundles")}>
                     Bundles
                   </Button>
@@ -460,7 +448,7 @@ export default function Brainrot() {
             <div className="min-w-0">
             {(() => {
               if (filter === "all") {
-                const order: FilterKey[] = ["best", "bundles", "brainrots", "lucky", "mutated"];
+                const order: FilterKey[] = ["best", "bundles", "brainrots"];
                 return (
                   <div>
                     {order.map((key) => {
@@ -493,9 +481,7 @@ export default function Brainrot() {
               {[
                 { key: 'best', label: 'Best Sellers', color: 'text-red-400 hover:bg-gradient-to-t hover:from-red-500/10 hover:text-red-300', rect: '#FE5050', stroke: '#FE5050' },
                 { key: 'brainrots', label: 'Brainrots', color: 'text-gray-400 hover:bg-gradient-to-t hover:from-emerald-500/10 hover:text-emerald-300', rect: '#22c55e', stroke: '#22c55e' },
-                { key: 'lucky', label: 'Lucky Blocks', color: 'text-gray-400 hover:bg-gradient-to-t hover:from-emerald-500/10 hover:text-emerald-300', rect: '#22c55e', stroke: '#22c55e' },
                 { key: 'bundles', label: 'Bundles', color: 'text-gray-400 hover:bg-gradient-to-t hover:from-emerald-500/10 hover:text-emerald-300', rect: '#22c55e', stroke: '#22c55e' },
-                { key: 'mutated', label: 'Mutated', color: 'text-gray-400 hover:bg-gradient-to-t hover:from-emerald-500/10 hover:text-emerald-300', rect: '#22c55e', stroke: '#22c55e' },
               ].map((b) => (
                 <button key={b.key as string}
                   type="button"
