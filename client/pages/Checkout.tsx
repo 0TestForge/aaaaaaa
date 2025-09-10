@@ -286,6 +286,14 @@ export default function Checkout() {
                     if (idx === -1) return lines;
                     const next = lines.slice();
                     const cur = next[idx];
+                    // Special behavior for Blade Ball Tokens: decrement by 100, min 2000
+                    if (cur.id === 'blade-tokens') {
+                      const newQty = Math.max(2000, cur.qty - 100);
+                      // If quantity would drop below 2000, keep at 2000
+                      next[idx] = { ...cur, qty: newQty, priceLocal: Math.round((newQty / 1000) * 5) };
+                      return next;
+                    }
+                    // Fallback behaviour for other items: decrement by 1, remove if <= 1
                     if (cur.qty <= 1) { next.splice(idx, 1); return next; }
                     const unit = Math.max(1, Math.round(cur.priceLocal / cur.qty));
                     next[idx] = { ...cur, qty: cur.qty - 1, priceLocal: Math.max(0, cur.priceLocal - unit) };
@@ -296,6 +304,13 @@ export default function Checkout() {
                     if (idx === -1) return lines;
                     const next = lines.slice();
                     const cur = next[idx];
+                    // Special behavior for Blade Ball Tokens: increment by 100, max 300000
+                    if (cur.id === 'blade-tokens') {
+                      const newQty = Math.min(300000, cur.qty + 100);
+                      next[idx] = { ...cur, qty: newQty, priceLocal: Math.round((newQty / 1000) * 5) };
+                      return next;
+                    }
+                    // Fallback behaviour for other items: increment by 1
                     const unit = Math.max(1, Math.round(cur.priceLocal / cur.qty));
                     next[idx] = { ...cur, qty: cur.qty + 1, priceLocal: cur.priceLocal + unit };
                     return next;

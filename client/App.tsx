@@ -17,6 +17,7 @@ import Brainrot from "./pages/Brainrot";
 import Chat from "./pages/Chat";
 import Admin from "./pages/Admin";
 import Checkout from "./pages/Checkout";
+import Blade from "./pages/Blade";
 import { Layout } from "@/components/layout/Layout";
 
 const queryClient = new QueryClient();
@@ -39,6 +40,7 @@ const App = () => (
             <Route path="/chat" element={<Chat />} />
             <Route path="/admin" element={<Admin />} />
             <Route path="/checkout" element={<Checkout />} />
+            <Route path="/blade" element={<Blade />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Route>

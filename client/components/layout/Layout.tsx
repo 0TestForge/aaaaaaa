@@ -6,6 +6,7 @@ export function Layout() {
   const location = useLocation();
   const navigate = useNavigate();
   const isCheckout = location.pathname.startsWith("/checkout");
+  const isNoFooter = location.pathname.startsWith("/blade");
   return (
     <div className={isCheckout ? "min-h-screen bg-[#00140d] text-foreground relative" : "min-h-screen bg-gradient-to-b from-[#0b0d1a] via-[#0f1224] to-[#0b0d1a] text-foreground relative"}>
       {/* decorative site background accents */}
@@ -61,7 +62,7 @@ export function Layout() {
       <main id="main" className="relative">
         <Outlet />
       </main>
-      {isCheckout ? null : <SiteFooter />}
+      {isCheckout || isNoFooter ? null : <SiteFooter />}
     </div>
   );
 }

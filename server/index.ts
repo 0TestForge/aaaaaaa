@@ -30,5 +30,16 @@ export function createServer() {
   app.get("/api/rates", handleRates);
   app.post("/api/checkout", handleCreateCheckout);
 
+  // Product CRUD (simple file-backed DB)
+  // GET /api/products
+  // POST /api/products
+  // PATCH /api/products/:id
+  // DELETE /api/products/:id
+  const { handleGetProducts, handleCreateProduct, handleUpdateProduct, handleDeleteProduct } = require("./routes/products");
+  app.get("/api/products", handleGetProducts);
+  app.post("/api/products", handleCreateProduct);
+  app.patch("/api/products/:id", handleUpdateProduct);
+  app.delete("/api/products/:id", handleDeleteProduct);
+
   return app;
 }

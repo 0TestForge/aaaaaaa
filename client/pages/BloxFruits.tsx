@@ -78,6 +78,16 @@ export default function BloxFruits() {
     return () => { window.removeEventListener("prices:update", onPrices as EventListener); window.removeEventListener("storage", onPrices as EventListener); };
   }, []);
 
+  // Stock overrides (admin)
+  const [stockOverrides, setStockOverrides] = useState<Record<string, number>>({});
+  useEffect(() => {
+    try { const raw = localStorage.getItem("stockOverrides"); if (raw) setStockOverrides(JSON.parse(raw) || {}); } catch {}
+    const onStock = () => { try { const raw = localStorage.getItem("stockOverrides"); setStockOverrides(raw ? JSON.parse(raw) : {}); } catch {} };
+    window.addEventListener("stock:update", onStock as EventListener);
+    window.addEventListener("storage", onStock as EventListener);
+    return () => { window.removeEventListener("stock:update", onStock as EventListener); window.removeEventListener("storage", onStock as EventListener); };
+  }, []);
+
   // Load admin custom products / deletions for Blox Fruits
   useEffect(() => {
     const keyC = "admin:customProducts:blox";
@@ -185,12 +195,29 @@ export default function BloxFruits() {
                             Add to Cart
                           </button>
                         </div>
-                        <div className="absolute top-2 left-2 flex select-none items-center gap-1.5 rounded-lg bg-gradient-to-r from-red-600/90 to-red-500/90 px-3 py-1.5 shadow-sm backdrop-blur-sm">
-                          <div className="rounded-full bg-red-500/30 p-1">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" className="size-5" fill="currentColor"><rect width="256" height="256" fill="none"></rect><path d="M96,104a8,8,0,1,1,8-8A8,8,0,0,1,96,104Zm64,48a8,8,0,1,0,8,8A8,8,0,0,0,160,152Zm80-24c0,10.44-7.51,18.27-14.14,25.18-3.77,3.94-7.67,8-9.14,11.57-1.36,3.27-1.44,8.69-1.52,13.94-.15,9.76-.31,20.82-8,28.51s-18.75,7.85-28.51,8c-5.25.08-10.67.16-13.94,1.52-3.57,1.47-7.63,5.37-11.57,9.14C146.27,232.49,138.44,240,128,240s-18.27-7.51-25.18-14.14c-3.94-3.77-8-7.67-11.57-9.14-3.27-1.36-8.69-1.44-13.94-1.52-9.76-.15-20.82-.31-28.51-8s-7.85-18.75-8-28.51c-.08-5.25-.16-10.67-1.52-13.94-1.47-3.57-5.37-7.63-9.14-11.57C23.51,146.27,16,138.44,16,128s7.51-18.27,14.14-25.18c3.77-3.94,7.67-8,9.14-11.57,1.36-3.27,1.44-8.69,1.52-13.94.15-9.76.31-20.82,8-28.51s18.75-7.85,28.51-8c5.25-.08,10.67-.16,13.94-1.52,3.57-1.47,7.63-5.37,11.57-9.14C109.73,23.51,117.56,16,128,16s18.27,7.51,25.18,14.14c3.94,3.77,8,7.67,11.57,9.14,3.27,1.36,8.69,1.44,13.94,1.52,9.76.15,20.82.31,28.51,8s7.85,18.75,8,28.51c.08,5.25.16,10.67,1.52,13.94,1.47,3.57,5.37,7.63,9.14,11.57C232.49,109.73,240,117.56,240,128Z"/></svg>
-                          </div>
-                          <p className="font-medium text-sm text-white">Save {priceFmt.format(toLocalRounded(7))}</p>
-                        </div>
+                        {(() => {
+                          try {
+                            const raw = localStorage.getItem('stockOverrides');
+                            const so = raw ? JSON.parse(raw) : {};
+                            const s = (so && Object.prototype.hasOwnProperty.call(so, it.id)) ? Number(so[it.id]) : it.stock;
+                            if (!isFinite(s) || s > 0) {
+                              return (<div className="absolute top-2 left-2 flex select-none items-center gap-1.5 rounded-lg bg-gradient-to-r from-red-600/90 to-red-500/90 px-3 py-1.5 shadow-sm backdrop-blur-sm">
+                                <div className="rounded-full bg-red-500/30 p-1">
+                                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" className="size-5" fill="currentColor"><rect width="256" height="256" fill="none"></rect><path d="M96,104a8,8,0,1,1,8-8A8,8,0,0,1,96,104Zm64,48a8,8,0,1,0,8,8A8,8,0,0,0,160,152Zm80-24c0,10.44-7.51,18.27-14.14,25.18-3.77,3.94-7.67,8-9.14,11.57-1.36,3.27-1.44,8.69-1.52,13.94-.15,9.76-.31,20.82-8,28.51s-18.75,7.85-28.51,8c-5.25.08-10.67.16-13.94,1.52-3.57,1.47-7.63,5.37-11.57,9.14C146.27,232.49,138.44,240,128,240s-18.27-7.51-25.18-14.14c-3.94-3.77-8-7.67-11.57-9.14-3.27-1.36-8.69-1.44-13.94-1.52-9.76-.15-20.82-.31-28.51-8s-7.85-18.75-8-28.51c-.08-5.25-.16-10.67-1.52-13.94-1.47-3.57-5.37-7.63-9.14-11.57C23.51,146.27,16,138.44,16,128s7.51-18.27,14.14-25.18c3.77-3.94,7.67-8,9.14-11.57,1.36-3.27,1.44-8.69,1.52-13.94.15-9.76.31-20.82,8-28.51s18.75-7.85,28.51-8c5.25-.08,10.67-.16,13.94-1.52,3.57-1.47,7.63-5.37,11.57-9.14C109.73,23.51,117.56,16,128,16s18.27,7.51,25.18,14.14c3.94,3.77,8,7.67,11.57,9.14,3.27,1.36,8.69,1.44,13.94,1.52,9.76.15,20.82.31,28.51,8s7.85,18.75,8,28.51c.08,5.25.16,10.67,1.52,13.94,1.47,3.57,5.37,7.63,9.14,11.57C232.49,109.73,240,117.56,240,128Z"/></svg>
+                                </div>
+                                <p className="font-medium text-sm text-white">Save {priceFmt.format(toLocalRounded(7))}</p>
+                              </div>);
+                            }
+                            return (<div className="absolute top-2 left-2 z-20 rounded-md bg-gray-700 px-2 py-1 shadow-sm"><p className="font-medium text-gray-300 text-xs whitespace-nowrap">Out of Stock</p></div>);
+                          } catch (e) {
+                            return (<div className="absolute top-2 left-2 flex select-none items-center gap-1.5 rounded-lg bg-gradient-to-r from-red-600/90 to-red-500/90 px-3 py-1.5 shadow-sm backdrop-blur-sm">
+                              <div className="rounded-full bg-red-500/30 p-1">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" className="size-5" fill="currentColor"><rect width="256" height="256" fill="none"></rect><path d="M96,104a8,8,0,1,1,8-8A8,8,0,0,1,96,104Zm64,48a8,8,0,1,0,8,8A8,8,0,0,0,160,152Zm80-24c0,10.44-7.51,18.27-14.14,25.18-3.77,3.94-7.67,8-9.14,11.57-1.36,3.27-1.44,8.69-1.52,13.94-.15,9.76-.31,20.82-8,28.51s-18.75,7.85-28.51,8c-5.25.08-10.67.16-13.94,1.52-3.57,1.47-7.63,5.37-11.57,9.14C146.27,232.49,138.44,240,128,240s-18.27-7.51-25.18-14.14c-3.94-3.77-8-7.67-11.57-9.14-3.27-1.36-8.69-1.44-13.94-1.52-9.76-.15-20.82-.31-28.51-8s-7.85-18.75-8-28.51c-.08-5.25-.16-10.67-1.52-13.94-1.47-3.57-5.37-7.63-9.14-11.57C23.51,146.27,16,138.44,16,128s7.51-18.27,14.14-25.18c3.77-3.94,7.67-8,9.14-11.57,1.36-3.27,1.44-8.69,1.52-13.94.15-9.76.31-20.82,8-28.51s18.75-7.85,28.51-8c5.25-.08,10.67-.16,13.94-1.52,3.57-1.47,7.63-5.37,11.57-9.14C109.73,23.51,117.56,16,128,16s18.27,7.51,25.18,14.14c3.94,3.77,8,7.67,11.57,9.14,3.27,1.36,8.69,1.44,13.94,1.52,9.76.15,20.82.31,28.51,8s7.85,18.75,8,28.51c.08,5.25.16,10.67,1.52,13.94,1.47,3.57,5.37,7.63,9.14,11.57C232.49,109.73,240,117.56,240,128Z"/></svg>
+                              </div>
+                              <p className="font-medium text-sm text-white">Save {priceFmt.format(toLocalRounded(7))}</p>
+                            </div>);
+                          }
+                        })()}
                       </div>
                       <div className="relative h-full bg-[#141425] p-5 transition-colors duration-500 group-hover:bg-[#1a1a2f]">
                         <div className="space-y-1">
@@ -394,7 +421,7 @@ export default function BloxFruits() {
         {cartOpen && (
           <div className="md:hidden fixed inset-0 z-[2147483651] bg-gradient-to-b from-[#0b0d1a] to-[#111221] border border-white/5">
             <div className="flex h-full flex-col">
-              <div className="flex items-center justify-between px-4 py-3 border-b border-white/10"><h4 className="text-base font-semibold">Cart</h4><button onClick={() => setCartOpen(false)} className="h-9 w-9 rounded-md bg-emerald-500 hover:bg-emerald-600 flex items-center justify-center text-white">×</button></div>
+              <div className="flex items-center justify-between px-4 py-3 border-b border-white/10"><h4 className="text-base font-semibold">Cart</h4><button type="button" onPointerDown={(e) => { e.stopPropagation(); setCartOpen(false); }} onClick={(e) => { e.stopPropagation(); setCartOpen(false); }} className="h-9 w-9 rounded-md bg-emerald-500 hover:bg-emerald-600 flex items-center justify-center text-white">×</button></div>
               <div className="flex-1 overflow-auto p-4">
                 <div className="flex flex-col items-center gap-4">
                   <img src="https://cdn.builder.io/api/v1/image/assets%2Fd298c54982d64a0783c9a8a3d1e480c1%2F10eceadf204c44b98902bc8d6f09be5d?format=webp&width=800" alt="cart art" className="h-28" />
