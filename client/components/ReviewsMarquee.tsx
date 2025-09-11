@@ -126,7 +126,7 @@ export function ReviewsMarquee({ count = 982 }: { count?: number }) {
   
               <h2 className="mt-3 text-3xl md:text-4xl font-extrabold text-slate-100 leading-tight flex items-center gap-3">
                 <img src="https://cdn.builder.io/api/v1/image/assets%2Fd298c54982d64a0783c9a8a3d1e480c1%2F7886c15a725e4268bb981fb1c2969734?format=webp&width=800" alt="trusted icon" className="w-32 h-32 md:w-40 md:h-40 rounded-full object-cover shadow-2xl" />
-                <span>Trusted by <span className="text-emerald-400">1000+</span> - costomers</span>
+                <span>Trusted by <span className="text-emerald-400">1000+</span> - customers</span>
               </h2>
             </div>
 
@@ -153,7 +153,7 @@ export function ReviewsMarquee({ count = 982 }: { count?: number }) {
 
           <div
             ref={trackRef}
-            className="marquee-track flex items-stretch gap-4 py-4 w-full"
+            className="marquee-track flex items-stretch gap-4 py-4 w-max"
             role="list"
             style={{ pointerEvents: 'none' }}
           >

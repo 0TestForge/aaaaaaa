@@ -4,6 +4,7 @@ import { cn } from "@/lib/utils";
 import { useMemo, useState, useEffect, useRef } from "react";
 import { useToast, toast } from "@/hooks/use-toast";
 import { useGeo } from "@/hooks/useGeo";
+import { useNavigate } from "react-router-dom";
 
 // Domain types
 type Item = {
@@ -36,6 +37,7 @@ export default function MM2() {
   // Filters and search
   const [filter, setFilter] = useState<FilterKey>("all");
   const [q, setQ] = useState("");
+  const navigate = useNavigate();
   // Handle global search from navbar
   useEffect(() => {
     const handler = (e: Event) => {
@@ -170,7 +172,7 @@ export default function MM2() {
     plants: "Plants",
     best: "Best Sellers",
     bundles: "Bundles",
-    sheckle: "Sheckle",
+    sheckle: "Sheckles",
     fruits: "Fruits",
     mutated: "Mutated Pets",
     mega: "Mega Pets",
@@ -402,6 +404,20 @@ export default function MM2() {
         <div className="mb-3 flex items-center gap-3">
           {Icon(fkey)}
           <h2 className="best-heading text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tight text-white">{filterTitleMap[fkey].toUpperCase()}</h2>
+          <div className="ml-auto flex items-center gap-12">
+            <button
+              type="button"
+              onClick={() => navigate(`/mm/all?filter=${fkey}`)}
+              className="flex items-center justify-center disabled:opacity-75 text-white transition-all duration-300 ease-in-out font-sans rounded-[12px] bg-input border-border border-[2px] text-base font-medium leading-6 px-6 xs:px-10 py-2 lg:px-5 hover:opacity-80 active:opacity-100 active:scale-95 whitespace-nowrap"
+            >
+              View All
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" className="tabler-icon tabler-icon-arrow-right ml-2 size-5">
+                <path d="M5 12l14 0"></path>
+                <path d="M13 18l6 -6"></path>
+                <path d="M13 6l6 6"></path>
+              </svg>
+            </button>
+          </div>
         </div>
         <div ref={wrapperRef} className="best-scroll-wrapper relative">
           <div className="best-scroll flex gap-4 overflow-x-auto pb-4 snap-x snap-mandatory overscroll-contain">

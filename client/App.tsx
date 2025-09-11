@@ -13,7 +13,9 @@ import GrowGardenAll from "./pages/GrowGardenAll";
 import BloxFruits from "./pages/BloxFruits";
 import BloxFruitsAll from "./pages/BloxFruitsAll";
 import MM2 from "./pages/MM2";
+import MM2All from "./pages/MM2All";
 import Brainrot from "./pages/Brainrot";
+import BrainrotAll from "./pages/BrainrotAll";
 import Chat from "./pages/Chat";
 import Admin from "./pages/Admin";
 import Checkout from "./pages/Checkout";
@@ -34,7 +36,9 @@ const App = () => (
             <Route path="/grow" element={<GrowGarden />} />
             <Route path="/grow/all" element={<GrowGardenAll />} />
             <Route path="/mm" element={<MM2 />} />
+            <Route path="/mm/all" element={<MM2All />} />
             <Route path="/brainrot" element={<Brainrot />} />
+            <Route path="/brainrot/all" element={<BrainrotAll />} />
             <Route path="/blox" element={<BloxFruits />} />
             <Route path="/blox/all" element={<BloxFruitsAll />} />
             <Route path="/chat" element={<Chat />} />

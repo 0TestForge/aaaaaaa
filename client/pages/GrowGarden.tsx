@@ -223,7 +223,7 @@ export default function GrowGarden() {
     plants: "Plants",
     best: "Best Sellers",
     bundles: "Bundles",
-    sheckle: "Sheckle",
+    sheckle: "Sheckles",
     fruits: "Fruits",
     mutated: "Mutated Pets",
     mega: "Mega Pets",
@@ -391,7 +391,7 @@ export default function GrowGarden() {
                     Bundles
                   </Button>
                   <Button variant="ghost" size="sm" className={`px-2 py-2 text-white ${filter === "sheckle" ? "underline" : ""}`} onClick={() => setFilter("sheckle")}>
-                    Sheckle
+                    Sheckles
                   </Button>
                   <Button variant="ghost" size="sm" className={`px-2 py-2 text-white ${filter === "fruits" ? "underline" : ""}`} onClick={() => setFilter("fruits")}>
                     Fruits
@@ -451,7 +451,7 @@ export default function GrowGarden() {
                     Bundles
                   </Button>
                   <Button className="filter-custom justify-start w-full px-3 py-2 bg-transparent hover:bg-transparent border-0 shadow-none text-white" size="sm" onClick={() => setFilter("sheckle")}>
-                    Sheckle
+                    Sheckles
                   </Button>
                   <Button className="filter-custom justify-start w-full px-3 py-2 bg-transparent hover:bg-transparent border-0 shadow-none text-white" size="sm" onClick={() => setFilter("fruits")}>
                     Fruits
